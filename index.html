@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>リングチップ検索</title>
+</head>
+<body>
+  <h1>プレイヤー検索</h1>
+  <input type="text" id="query" placeholder="名前またはID">
+  <button onclick="searchPlayer()">検索</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function searchPlayer() {
+      const query = document.getElementById("query").value;
+      const url = `https://script.google.com/macros/s/AKfycbwAcIt4XmNBAS9pH16AJUmD2OuXghmUxttVukhKRDshUD1jCwrnQFaNKDXsXQRax1PUDA/exec?action=getPlayer&query=${encodeURIComponent(query)}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const resultDiv = document.getElementById("result");
+
+      if (data && data.player_id) {
+        resultDiv.innerHTML = `
+          <p><strong>ID:</strong> ${data.player_id}</p>
+          <p><strong>名前:</strong> ${data.name}</p>
+          <p><strong>登録日:</strong> ${data.created_at}</p>
+          <p><strong>メモ:</strong> ${data.memo}</p>
+        `;
+      } else {
+        resultDiv.innerHTML = "<p>該当するプレイヤーが見つかりませんでした。</p>";
+      }
+    }
+  </script>
+</body>
+</html>
