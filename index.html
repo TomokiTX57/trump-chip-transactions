@@ -14,7 +14,6 @@
   <hr>
 
   <h1>プレイヤー新規登録</h1>
-  <input type="text" id="player_id" placeholder="プレイヤーID"><br>
   <input type="text" id="name" placeholder="名前"><br>
   <input type="text" id="memo" placeholder="メモ（任意）"><br>
   <button onclick="registerPlayer()">登録</button>
@@ -43,25 +42,28 @@
       }
 
       async function registerPlayer() {
-  const player_id = document.getElementById("player_id").value;
   const name = document.getElementById("name").value;
   const memo = document.getElementById("memo").value;
 
-  const res = await fetch("https://script.google.com/macros/s/【あなたの最新のURL】/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      action: "addPlayer",
-      player_id,
-      name,
-      memo
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
+  try {
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "addPlayer",
+        name,
+        memo
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
-  const data = await res.json();
-  alert(data.message);
+    const data = await res.json();
+    document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
+  } catch (error) {
+    console.error("登録エラー:", error);
+    alert("登録に失敗しました");
+  }
 }
     }
   </script>
