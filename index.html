@@ -11,6 +11,16 @@
 
   <div id="result"></div>
 
+  <hr>
+
+  <h1>プレイヤー新規登録</h1>
+  <input type="text" id="player_id" placeholder="プレイヤーID"><br>
+  <input type="text" id="name" placeholder="名前"><br>
+  <input type="text" id="memo" placeholder="メモ（任意）"><br>
+  <button onclick="registerPlayer()">登録</button>
+
+  <div id="registerResult"></div>
+
   <script>
     async function searchPlayer() {
       const query = document.getElementById("query").value;
