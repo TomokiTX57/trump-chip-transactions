@@ -14,7 +14,7 @@
   <script>
     async function searchPlayer() {
       const query = document.getElementById("query").value;
-      const url = `https://script.google.com/macros/s/AKfycbwAcIt4XmNBAS9pH16AJUmD2OuXghmUxttVukhKRDshUD1jCwrnQFaNKDXsXQRax1PUDA/exec?action=getPlayer&query=${encodeURIComponent(query)}`;
+      const url = `https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec=${encodeURIComponent(query)}`;
 
       const res = await fetch(url);
       const data = await res.json();
