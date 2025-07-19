@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>リングチップ検索</title>
+  <title>リングチップ管理</title>
 </head>
 <body>
   <h1>プレイヤー検索</h1>
@@ -21,52 +21,61 @@
   <div id="registerResult"></div>
 
   <script>
-    const url = `https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec?action=getPlayer&query=${encodeURIComponent(query)}`;
+    // ✅ GASの共通URL（GETもPOSTもこのURL）
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec";
+
+    // 🔍 プレイヤー検索（GET）
     async function searchPlayer() {
       const query = document.getElementById("query").value;
+      const url = `${GAS_URL}?action=getPlayer&query=${encodeURIComponent(query)}`;
 
-      const res = await fetch(url);
-      const data = await res.json();
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
 
-      const resultDiv = document.getElementById("result");
+        const resultDiv = document.getElementById("result");
 
-      if (data && data.player_id) {
-        resultDiv.innerHTML = `
-          <p><strong>ID:</strong> ${data.player_id}</p>
-          <p><strong>名前:</strong> ${data.name}</p>
-          <p><strong>登録日:</strong> ${data.created_at}</p>
-          <p><strong>メモ:</strong> ${data.memo}</p>
-        `;
-      } else {
-        resultDiv.innerHTML = "<p>該当するプレイヤーが見つかりませんでした。</p>";
+        if (data && data.player_id) {
+          resultDiv.innerHTML = `
+            <p><strong>ID:</strong> ${data.player_id}</p>
+            <p><strong>名前:</strong> ${data.name}</p>
+            <p><strong>登録日:</strong> ${data.created_at}</p>
+            <p><strong>メモ:</strong> ${data.memo}</p>
+          `;
+        } else {
+          resultDiv.innerHTML = "<p>該当するプレイヤーが見つかりませんでした。</p>";
+        }
+      } catch (error) {
+        console.error("検索エラー:", error);
+        alert("検索に失敗しました");
       }
-
     }
-      async function registerPlayer() {
-  const name = document.getElementById("name").value;
-  const memo = document.getElementById("memo").value;
 
-  try {
-    const res = await fetch(GAS_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        action: "addPlayer",
-        name,
-        memo
-      }),
-      headers: {
-        "Content-Type": "application/json"
+    // ➕ プレイヤー登録（POST）
+    async function registerPlayer() {
+      const name = document.getElementById("name").value;
+      const memo = document.getElementById("memo").value;
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "addPlayer",
+            name,
+            memo
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        const data = await res.json();
+        document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
+      } catch (error) {
+        console.error("登録エラー:", error);
+        alert("登録に失敗しました");
       }
-    });
-
-    const data = await res.json();
-    document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
-  } catch (error) {
-    console.error("登録エラー:", error);
-    alert("登録に失敗しました");
-  }
-}
-    
+    }
   </script>
 </body>
 </html>
