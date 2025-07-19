@@ -21,9 +21,9 @@
   <div id="registerResult"></div>
 
   <script>
+    const url = `https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec?action=getPlayer&query=${encodeURIComponent(query)}`;
     async function searchPlayer() {
       const query = document.getElementById("query").value;
-      const url = `https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec?action=getPlayer&query=${encodeURIComponent(query)}`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -43,8 +43,8 @@
 
     }
       async function registerPlayer() {
-      const name = document.getElementById("name").value;
-            const memo = document.getElementById("memo").value;
+  const name = document.getElementById("name").value;
+  const memo = document.getElementById("memo").value;
 
   try {
     const res = await fetch(GAS_URL, {
