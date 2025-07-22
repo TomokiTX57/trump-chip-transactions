@@ -22,7 +22,7 @@
 
   <script>
     // ✅ GASの共通URL（GETもPOSTもこのURL）
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyKWA09ADdvJskhXL219BokLg8ELccvkwJvrjCaxD_yVj-XUUBM5j9fDMWRJu6KuS_kHQ/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbycJe6LqRU1K0nnuVz4gIOkQckjkJlFNls7V4fUWzK1w5WH-Hzdh4CRZlFnGysrNcTsYg/exec";
 
     // 🔍 プレイヤー検索（GET）
     async function searchPlayer() {
@@ -53,27 +53,29 @@
 
     // ➕ プレイヤー登録（POST）
     async function registerPlayer() {
-    const name = document.getElementById("name").value;
-    const memo = document.getElementById("memo").value;
+  const name = document.getElementById("name").value;
+  const memo = document.getElementById("memo").value;
 
-    const form = new FormData();
-    form.append("action", "addPlayer");
-    form.append("name", name);
-    form.append("memo", memo);
+  try {
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "addPlayer",
+        name,
+        memo
+      }),
+    });
 
-    try {
-      const res = await fetch(GAS_URL, {
-        method: "POST",
-        body: form,
-      });
-
-      const data = await res.json();
-      document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
-    } catch (error) {
-      console.error("登録エラー:", error);
-      alert("登録に失敗しました");
-    }
+    const data = await res.json();
+    document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
+  } catch (error) {
+    console.error("登録エラー:", error);
+    alert("登録に失敗しました");
   }
+}
   </script>
 </body>
 </html>
