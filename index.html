@@ -62,7 +62,7 @@
     form.append("memo", memo);
 
     try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec", {
+      const res = await fetch(GAS_URL, {
         method: "POST",
         body: form,
       });
