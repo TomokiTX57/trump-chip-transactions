@@ -53,29 +53,27 @@
 
     // ➕ プレイヤー登録（POST）
     async function registerPlayer() {
-      const name = document.getElementById("name").value;
-      const memo = document.getElementById("memo").value;
+    const name = document.getElementById("name").value;
+    const memo = document.getElementById("memo").value;
 
-      try {
-        const res = await fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "addPlayer",
-            name,
-            memo
-          }),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
+    const form = new FormData();
+    form.append("action", "addPlayer");
+    form.append("name", name);
+    form.append("memo", memo);
 
-        const data = await res.json();
-        document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
-      } catch (error) {
-        console.error("登録エラー:", error);
-        alert("登録に失敗しました");
-      }
+    try {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbz59BPpvZvrm8Fc3GTDbgY4m4alCRDs0tO7eWBOy3zdn3ZlxbZhTMxbLiM-bccsxHAOFA/exec", {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+      document.getElementById("registerResult").innerHTML = `<p>${data.message}</p>`;
+    } catch (error) {
+      console.error("登録エラー:", error);
+      alert("登録に失敗しました");
     }
+  }
   </script>
 </body>
 </html>
